@@ -1,0 +1,31 @@
+body {
+    background-color: #abb9b588 !important;
+  }
+  
+  table {
+      font-family: arial, sans-serif;
+    }
+    .unithover td{
+      background-color: rgb(228, 243, 200);
+    }
+    .unithover td:hover{
+        background-color: #f3f8aa;
+    }
+    
+  .class {
+      display: flex;
+  }
+  .week p{
+      display: inline;
+  }
+
+  .required:after {
+    content:" *";
+    font-size: 14px;
+    color:red;
+  }
+  
+  @media (min-width: 576px) {
+  
+  }
+  
