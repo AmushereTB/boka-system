@@ -32,8 +32,8 @@ function tableHead() {
         th = document.createElement('th');
         th.innerHTML = headerValue;
         tblContent.appendChild(th);
-    }
-}
+    };
+};
 
 //add days to certain date and get new date
 function addDayToDate(ymd, ad) { //ymd:date. ad: add days
@@ -71,12 +71,23 @@ const arrayData = async () => {
 };
 
 
-//Array.isArray();
+//from here, it needs another comparison, to compare the date in unit and today's date, if unit date is larger, processed the following 
+
+
+/**下面的比较比的是只要日期比今天大，就顺位把表格CELL加进去,
+ * 主要问题是： 日期与格子没有联系
+ * 改正方法： (1) 以日期为单位， 7天-今天作为横排的数值，起始值设在当天。 应该从col下手   [可行性太低]
+ * (2) 把表格头放到这里，以日期为导向， 当日期与今天的日期相等是CASE1， 日期大于今天CASE2， 日期小于今天CASE3
+ * (3) 那UNIT作比较，直接比较现在的时间和UNIT里的时间，小的就加空的 TR TD
+ */
+/**先把TABLE的生成变为以先生成COLUMN，然后再生成ROW */
+
 
 //create function to add row to each colmn
 const tableBody = () => {
-    let tr; //table <tr>
-    let td; //table <td>
+
+    let row; //table <tr>
+    let column; //table <td>
     const tblBodyContent = document.getElementById('tableBodyContent');
     const onlyNum = /\D/g;
     tblBodyContent.innerHTML = '' //remove existed calendar
@@ -87,50 +98,55 @@ const tableBody = () => {
         }
         return response;
     };
-    
+
     fetch('/get_users')
         .then(handleErrors)
         .then(response => response.json())
         .then(data => {
             // console.log(data)
-            // console.log(Array.isArray(data))
 
             for (let i = 0; i < 10; i++) {
-                tr = document.createElement('tr')
+                row = document.createElement('tr');
                 for (let col = 0; col < 6; col++) { //only monday to saturday
                     if (col === 5 && i > 5) break; //saturday stop at 15:00
-                    td = document.createElement('td')
-                    // td.onclick = function(){
-                    //     alert(this.id)
-                    // };
-                    let unitIdValue = `${addDayToDate(getMondayDate(new Date()), col + incrementOfWeek)
-                        .toLocaleDateString()}, 
+                    column = document.createElement('td')
+                    let calendarTime = new Date(addDayToDate(getMondayDate(new Date()), col + incrementOfWeek));
+                    let unitIdValue = `${calendarTime.toLocaleDateString()}, 
                     ${startingHour(col) + i < 10 ? '0' + (startingHour(col) + i) : startingHour(col) + i}`;
-
                     let unitValue = `${startingHour(col) + i < 10 ? '0' + (startingHour(col) + i) : startingHour(col) + i}:00`
                     let unitID = unitIdValue.replace(onlyNum, ''); //now have date, need add time
 
+                    calendarTime.setHours(startingHour(col) + i < 10 ? '0' + (startingHour(col) + i) : startingHour(col) + i)
+                    calendarTime.setMinutes(0)
+                    calendarTime.setSeconds(0)
+                    
+                    console.log(swedTime)
+                    if (new Date(swedTime) > calendarTime) {
+                        column.innerHTML = '';
+                        column.setAttribute('id', unitID);
+                        //column.setAttribute("style", "background-color:gray")
+                        row.appendChild(column);
+                    }else {
+                        if (data.includes(unitID)) {
+                            column.innerHTML = 'bokad';
+                            //td.set.style.cssText = "background-color: red"
+                            column.setAttribute('id', unitID);
+                            column.setAttribute("style", "background-color:gray")
+    
+                        } else {
+                            column.innerHTML = unitValue;
+                            column.setAttribute('id', unitID);
+                            column.addEventListener('click', unitclick);
+                        }
+                        row.appendChild(column);
+                    };
 
-                    if (data.includes(unitID)) {
-                        td.innerHTML = 'bokad';
-                        //td.set.style.cssText = "background-color: red"
-                        td.setAttribute('id', unitID);
-                        td.setAttribute("style", "background-color:gray")
-                        
-                    } else {
-                        td.innerHTML = unitValue;
-                        td.setAttribute('id', unitID);
-                        td.addEventListener('click', unitclick);
-                    }
-
-                    // td.innerHTML = unitValue;
-                    // td.setAttribute('id', unitID);
-                    // td.addEventListener('click', unitclick);
-                    tr.appendChild(td);
-
+                    
+                    //row.appendChild(column);
                 }
-                tblBodyContent.appendChild(tr);
+                tblBodyContent.appendChild(row);
             } //for loop end
+
         })//fetch end
 };
 
