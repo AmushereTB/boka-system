@@ -124,7 +124,7 @@ const tableBody = () => {
                     if (new Date(swedTime) > calendarTime) {
                         column.innerHTML = '';
                         column.setAttribute('id', unitID);
-                        //column.setAttribute("style", "background-color:gray")
+                        column.setAttribute("style", "visibility: hidden")
                         row.appendChild(column);
                     }else {
                         if (data.includes(unitID)) {
