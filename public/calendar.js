@@ -116,23 +116,33 @@ const tableBody = () => {
                     let unitValue = `${startingHour(col) + i < 10 ? '0' + (startingHour(col) + i) : startingHour(col) + i}:00`
                     let unitID = unitIdValue.replace(onlyNum, ''); //now have date, need add time
 
-                    calendarTime.setHours(startingHour(col) + i < 10 ? '0' + (startingHour(col) + i) : startingHour(col) + i)
-                    calendarTime.setMinutes(0)
-                    calendarTime.setSeconds(0)
-                    
-                    console.log(swedTime)
-                    if (new Date(swedTime) > calendarTime) {
+                    calendarTime.setHours(startingHour(col) + i < 10 ? '0' + (startingHour(col) + i) : startingHour(col) + i);
+                    calendarTime.setMinutes(0);
+                    calendarTime.setSeconds(0);
+
+                    //console.log(new Date(swedTime).toLocaleDateString() > calendarTime.toLocaleDateString())
+                    let test = new Date(swedTime).toLocaleDateString() > calendarTime.toLocaleDateString();
+                    let testb = new Date(swedTime) > calendarTime
+
+
+                    if (new Date(swedTime).toLocaleDateString() > calendarTime.toLocaleDateString()) {
                         column.innerHTML = '';
                         column.setAttribute('id', unitID);
                         column.setAttribute("style", "visibility: hidden")
                         row.appendChild(column);
-                    }else {
+                    } else if (new Date(swedTime).getDate() == calendarTime.getDate() && new Date(swedTime) > calendarTime) {
+                        column.innerHTML = 'bokad';
+                        //td.set.style.cssText = "background-color: red"
+                        column.setAttribute('id', unitID);
+                        column.setAttribute("style", "background-color:gray")
+                        row.appendChild(column);
+                    } else {
                         if (data.includes(unitID)) {
                             column.innerHTML = 'bokad';
                             //td.set.style.cssText = "background-color: red"
                             column.setAttribute('id', unitID);
                             column.setAttribute("style", "background-color:gray")
-    
+
                         } else {
                             column.innerHTML = unitValue;
                             column.setAttribute('id', unitID);
@@ -141,7 +151,7 @@ const tableBody = () => {
                         row.appendChild(column);
                     };
 
-                    
+
                     //row.appendChild(column);
                 }
                 tblBodyContent.appendChild(row);
