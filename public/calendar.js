@@ -1,23 +1,8 @@
 
-//function to get the week number of the year
-Date.prototype.getWeekNumber = function () {
-    var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
-    var dayNum = d.getUTCDay() || 7;
-    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-};
-
 //Global variables
-let currentWeek = new Date().getWeekNumber();
 let currentDate = new Date();
 let swedTime = new Date().toLocaleString("en-US", { timeZone: "Europe/Stockholm" });
 let incrementOfDays = 0; //this value calculated by days, everytime when it +-7, it will consider as +-1 week.
-
-//function to show week number(不工作，新的一年无法重置)
-const showWeekNum = () => {
-    document.getElementById('week-number').innerHTML = `vecka ${currentWeek}`;
-};
 
 //function to add table head
 let tableHead = () => {
@@ -33,6 +18,7 @@ let tableHead = () => {
         th.innerHTML = headerValue;
         tblContent.appendChild(th);
     };
+
 };
 
 //add days to certain date and get new date
@@ -59,7 +45,6 @@ const arrayData = async () => {
     const data = await response.json();
     console.log(Array.isArray(data))
 };
-
 
 //create function to add row to each colmn
 const tableBody = () => {
@@ -132,6 +117,15 @@ const tableBody = () => {
         })//fetch end
 };
 
+//function to get the week number of the year
+Date.prototype.getWeekNumber = function () {
+    var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
+    var dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+};
+
 //unitclick
 function unitclick() {
     let tableCellId = this.id;
@@ -153,12 +147,13 @@ function startingHour(wd) { //weekday
     return currentDate.getHours();
 }
 
+let currentWeek = new Date().getWeekNumber();
 //function to go backwards
 const leftButton = document.getElementById('previousWeek');
 leftButton.addEventListener('click', minusSevenDays);
 function minusSevenDays() {
     incrementOfDays -= 7;
-    currentWeek -= 1;
+    currentWeek = new Date(addDayToDate(getMondayDate(new Date()), incrementOfDays)).getWeekNumber();
     creatCalendar();
 }
 
@@ -167,9 +162,13 @@ const rightButton = document.getElementById('nextWeek');
 rightButton.addEventListener('click', addSevenDays);
 function addSevenDays() {
     incrementOfDays += 7;
-    currentWeek += 1;
+    currentWeek = new Date(addDayToDate(getMondayDate(new Date()), incrementOfDays)).getWeekNumber();   
     creatCalendar();
 }
+
+let showWeekNum = () => {
+    document.getElementById('week-number').innerHTML = `vecka ${currentWeek}`;
+};
 
 function creatCalendar() {
     showWeekNum();
