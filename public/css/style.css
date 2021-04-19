@@ -4,6 +4,7 @@ body {
   
   table {
       font-family: arial, sans-serif;
+      
     }
     .unithover td{
       background-color: rgb(228, 243, 200);
@@ -11,6 +12,11 @@ body {
     .unithover td:hover{
         background-color: #f3f8aa;
     }
+
+  table td {     
+      height: 70px;
+    }
+    
     
   .class {
       display: flex;
