@@ -120,23 +120,28 @@ const tableBody = () => {
                     calendarTime.setMinutes(0);
                     calendarTime.setSeconds(0);
 
-                    //console.log(new Date(swedTime).toLocaleDateString() > calendarTime.toLocaleDateString())
+                    //console.log(new Date(swedTime).toLocaleDateString())
                     let test = new Date(swedTime).toLocaleDateString() > calendarTime.toLocaleDateString();
                     let testb = new Date(swedTime) > calendarTime
 
 
                     if (new Date(swedTime).toLocaleDateString() > calendarTime.toLocaleDateString()) {
+
                         column.innerHTML = '';
                         column.setAttribute('id', unitID);
                         column.setAttribute("style", "visibility: hidden")
                         row.appendChild(column);
+
                     } else if (new Date(swedTime).getDate() == calendarTime.getDate() && new Date(swedTime) > calendarTime) {
+
                         column.innerHTML = 'bokad';
                         //td.set.style.cssText = "background-color: red"
                         column.setAttribute('id', unitID);
                         column.setAttribute("style", "background-color:gray")
                         row.appendChild(column);
+
                     } else {
+
                         if (data.includes(unitID)) {
                             column.innerHTML = 'bokad';
                             //td.set.style.cssText = "background-color: red"
@@ -144,10 +149,13 @@ const tableBody = () => {
                             column.setAttribute("style", "background-color:gray")
 
                         } else {
+
                             column.innerHTML = unitValue;
                             column.setAttribute('id', unitID);
                             column.addEventListener('click', unitclick);
+
                         }
+                        
                         row.appendChild(column);
                     };
 
