@@ -1,37 +1,53 @@
 body {
     background-color: #abb9b588 !important;
-  }
-  
-  table {
-      font-family: arial, sans-serif;
-      
-    }
-    .unithover td{
-      background-color: rgb(228, 243, 200);
-    }
-    .unithover td:hover{
-        background-color: #f3f8aa;
-    }
+}
 
-  table td {     
-      height: 70px;
-    }
-    
-    
-  .class {
-      display: flex;
-  }
-  .week p{
-      display: inline;
-  }
+table {
+    font-family: arial, sans-serif;
+}
 
-  .required:after {
-    content:" *";
+.unithover td {
+    background-color: rgb(228, 243, 200);
+}
+
+.unithover td:hover {
+    background-color: #f3f8aa;
+}
+
+table td {
+    height: 70px;
+}
+
+.class {
+    display: flex;
+}
+
+.week p {
+    display: inline;
+}
+
+.required:after {
+    content: " *";
     font-size: 14px;
-    color:red;
-  }
-  
-  @media (min-width: 576px) {
-  
-  }
-  
+    color: red;
+}
+
+@media (min-width: 576px) {}
+
+.btn-label {
+    position: relative;
+    left: -12px;
+    display: inline-block;
+    padding: 6px 12px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 3px 0 0 3px;
+}
+
+.btn-labeled {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.btn {
+    margin-bottom: 10px;
+}

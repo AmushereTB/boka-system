@@ -1,4 +1,3 @@
-
 //Global variables
 let currentDate = new Date();
 let swedTime = new Date().toLocaleString("en-US", { timeZone: "Europe/Stockholm" });
@@ -8,7 +7,7 @@ let incrementOfDays = 0; //this value calculated by days, everytime when it +-7,
 let tableHead = () => {
     let th;
     let tblContent = document.getElementById('tableHeadContent');
-    tblContent.innerHTML = ''  //remove existed calendar
+    tblContent.innerHTML = '' //remove existed calendar
     tblContent.setAttribute('class', 'text-center');
     tblContent.setAttribute('style', `background-color: ${"#e6ffff"}`)
     for (let i = 0; i < 6; i++) {
@@ -33,14 +32,14 @@ let getMondayDate = (d) => {
     let day = d.getDay();
     let mondayDate = d.getDate() - day + (day == 0 ? -6 : 1);
     /**  date - day + 1 or +(-6)
- * if it's not sunday, then + 1, if it's sunday, -6*/
+     * if it's not sunday, then + 1, if it's sunday, -6*/
     return new Date(d.setDate(mondayDate));
 }
 
 /**
  * getData & arrayData is using to test purpose
  */
-const arrayData = async () => {
+const arrayData = async() => {
     const response = await fetch('/get_users');
     const data = await response.json();
     console.log(Array.isArray(data))
@@ -51,6 +50,8 @@ const tableBody = () => {
 
     let row;
     let column;
+    let btn;
+    let insertI;
     const tblBodyContent = document.getElementById('tableBodyContent');
     const onlyNum = /\D/g;
     tblBodyContent.innerHTML = '' //remove existed calendar
@@ -102,7 +103,22 @@ const tableBody = () => {
 
                     } else {
                         if (data.includes(unitID)) {
+
+                            btn = document.createElement('button');
+                            btn.setAttribute('type', 'button');
+                            btn.setAttribute('class', 'close')
+                            btn.setAttribute('aria-label', 'Close')
+
+                            insertI = document.createElement('span');
+                            insertI.setAttribute('aria-hidden', "true")
+                            insertI.innerHTML = '&times;'
+
+                            btn.appendChild(insertI)
+                            btn.addEventListener('click', deleteSchedule)
+                            btn.setAttribute('id', unitID);
                             column.innerHTML = 'bokad';
+                            column.appendChild(btn)
+
                             column.setAttribute('style', 'background-color:gray')
                         } else {
                             column.innerHTML = unitValue;
@@ -114,11 +130,11 @@ const tableBody = () => {
                 }
                 tblBodyContent.appendChild(row);
             } //for loop end
-        })//fetch end
+        }) //fetch end
 };
 
 //function to get the week number of the year
-Date.prototype.getWeekNumber = function () {
+Date.prototype.getWeekNumber = function() {
     var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
     var dayNum = d.getUTCDay() || 7;
     d.setUTCDate(d.getUTCDate() + 4 - dayNum);
@@ -129,12 +145,20 @@ Date.prototype.getWeekNumber = function () {
 //unitclick
 function unitclick() {
     let tableCellId = this.id;
+    alert(`this unit is ${tableCellId}`)
     window.localStorage.setItem('cell_id', tableCellId);
 
-    alert(`this unit is ${tableCellId}`)
+    //alert(`this unit is ${tableCellId}`)
     window.open("./form.html")
-    //window.location = "./form.html"
-    //location.href = "www.google.com"
+        //window.location = "./form.html"
+        //location.href = "www.google.com"
+}
+
+//deleteSchedule
+function deleteSchedule() {
+    let deleteCellId = this.id;
+    alert(`this unit id ${deleteCellId} will be delete`)
+
 }
 
 //starting hour (need to change based on Sweden time zone)
@@ -151,6 +175,7 @@ let currentWeek = new Date().getWeekNumber();
 //function to go backwards
 const leftButton = document.getElementById('previousWeek');
 leftButton.addEventListener('click', minusSevenDays);
+
 function minusSevenDays() {
     incrementOfDays -= 7;
     currentWeek = new Date(addDayToDate(getMondayDate(new Date()), incrementOfDays)).getWeekNumber();
@@ -160,9 +185,10 @@ function minusSevenDays() {
 //function to go forwards
 const rightButton = document.getElementById('nextWeek');
 rightButton.addEventListener('click', addSevenDays);
+
 function addSevenDays() {
     incrementOfDays += 7;
-    currentWeek = new Date(addDayToDate(getMondayDate(new Date()), incrementOfDays)).getWeekNumber();   
+    currentWeek = new Date(addDayToDate(getMondayDate(new Date()), incrementOfDays)).getWeekNumber();
     creatCalendar();
 }
 
@@ -177,4 +203,3 @@ function creatCalendar() {
 }
 
 creatCalendar()
-
