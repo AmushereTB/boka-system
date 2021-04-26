@@ -108,8 +108,9 @@ const tableBody = () => {
                             btn.setAttribute('class', 'close')
                             btn.setAttribute('aria-label', 'Close')
 
-                            insertI = document.createElement('span');
+                            insertI = document.createElement('a');
                             insertI.setAttribute('aria-hidden', "true")
+                            insertI.setAttribute('href', `/delete/` + encodeURIComponent(unitID))
                             insertI.innerHTML = '&times;'
 
                             btn.appendChild(insertI)
@@ -148,9 +149,10 @@ function unitclick() {
     window.localStorage.setItem('cell_id', tableCellId);
 
     //alert(`this unit is ${tableCellId}`)
-    window.open("./form.html")
-        //window.location = "./form.html"
+    //window.open("./form.html")
+    window.location = "./form.html"
         //location.href = "www.google.com"
+
 }
 
 //deleteSchedule
