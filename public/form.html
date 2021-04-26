@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <title>Booking form</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -10,56 +11,58 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-  <body>
-      <div class="container">
+
+<body>
+    <div class="container">
         <div class="row">
             <div class="col-5">
-            <div id="declareTime">
-              <p>here declare the booking time. day-dates-year-timeda</p>
-            </div>
+                <div id="declareTime">
+                    <p>here declare the booking time. day-dates-year-timeda</p>
+                </div>
                 <form action="user_input" method="POST">
                     <label for="inputname" class="required">Full Name</label>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                          <input type="name" class="form-control" id="inputlastname" name="inputlastname" placeholder="Lastname" required>
+                            <input type="name" class="form-control" id="inputlastname" name="inputlastname" placeholder="Lastname" required>
                         </div>
                         <div class="form-group col-md-6">
-                          <input type="name" class="form-control" id="inputfistname" name="inputfistname" placeholder="Firstname" required>
+                            <input type="name" class="form-control" id="inputfistname" name="inputfistname" placeholder="Firstname" required>
                         </div>
-                      </div>
-                      <div class="form-group">
+                    </div>
+                    <div class="form-group">
                         <label for="inputEmail" class="required">E-mail</label>
                         <input type="text" class="form-control" id="inputEmail" name="inputEmail" placeholder="email@address.com" required>
-                      </div>
-                      <div class="form-group">
+                    </div>
+                    <div class="form-group">
                         <label for="inputPhone" class="required">Phone Number</label>
-                        <input type="text" class="form-control" id="inputPhone" name="inputPhone" placeholder="e.g. (+46) 72 111 2222" required> 
+                        <input type="text" class="form-control" id="inputPhone" name="inputPhone" placeholder="e.g. (+46) 72 111 2222" required>
                         <input type="hidden" name="input_cell_id" value="">
-                      </div>
-                      <div class="form-group">
+                    </div>
+                    <div class="form-group">
                         <label for="description">Description</label>
                         <textarea class="form-control" id="inputdescription" name="inputdescription"></textarea>
-                      </div>
-                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
             <!--this part below is used to demonstrate the time and service info of user choose -->
             <div class="col-5">
-              <div class="form-group row">
-                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
-                <div class="col-sm-10">
-                  <input type="email" class="form-control form-control-sm" id="colFormLabelSm" placeholder="col-form-label-sm">
+                <div class="form-group row">
+                    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control form-control-sm" id="colFormLabelSm" placeholder="col-form-label-sm">
+                    </div>
                 </div>
             </div>
         </div>
-      </div>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script>
-      document.querySelector('input[name="input_cell_id"]').value = window.localStorage.getItem('cell_id');
-    </script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script>
+            document.querySelector('input[name="input_cell_id"]').value = window.localStorage.getItem('cell_id');
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
 </html>

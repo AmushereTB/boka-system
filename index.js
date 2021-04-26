@@ -42,7 +42,7 @@ app
         let idContainer = [];
         mysqlConnect.connection.query('SELECT * FROM userinfo', (err, result, fields) => {
             if (!err) {
-                Object.keys(result).forEach(function (key) {
+                Object.keys(result).forEach(function(key) {
                     let row = result[key];
                     idContainer.push(row.timeID);
                 });
@@ -68,6 +68,12 @@ app
     .get('/test', (req, res) => {
         res.send('this is test')
     })
+
+// app.post('/api/delete/:id', (req, res) => {
+//     mysqlConnect.connection.query(`DELETE FROM userinfo WHERE id=?;`, timeID, function(err, result) {
+//         if (err) throw err;
+//     });
+// });
 
 
 //localhost:5500
