@@ -28,7 +28,6 @@ let addDayToDate = (ymd, ad) => { //ymd:date. ad: add days
 
 //function to get Monday's date
 let getMondayDate = (d) => {
-    //d = new Date(d);
     let day = d.getDay();
     let mondayDate = d.getDate() - day + (day == 0 ? -6 : 1);
     /**  date - day + 1 or +(-6)
@@ -158,6 +157,7 @@ function unitclick() {
 function deleteSchedule() {
     let deleteCellId = this.id;
     alert(`this unit id ${deleteCellId} will be delete`)
+
 
 }
 
