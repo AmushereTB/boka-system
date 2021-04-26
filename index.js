@@ -22,15 +22,16 @@ app
 
         const postQuery = 'INSERT INTO userinfo VALUE (?,?,?,?,?,?)';
         mysqlConnect.connection.query(postQuery, [timeID, lastName, firstName, email, phone, descrption], (err, rows, fields) => {
-            if (!err) {
-                console.log('USER CREATED SUCCESSFUL!!')
-            } else {
-                console.log(`the error if ${err}`)
-                res.send(500);
-                throw err;
-            }
-        })
-        res.end();
+                if (!err) {
+                    console.log('USER CREATED SUCCESSFUL!!')
+                } else {
+                    console.log(`the error if ${err}`)
+                    res.send(500);
+                    throw err;
+                }
+            })
+            //res.end();
+        res.redirect('/');
     })
 
 app
@@ -53,28 +54,39 @@ app
             //console.log(idContainer)
         })
 
-        //res.sendFile(__dirname + '/public/index.html');
     })
-    .get('/get_user_id', (req, res) => {
-        mysqlConnect.connection.query('SELECT * FROM userinfo', (err, result, fields) => {
+
+.get('/get_user_id/:id', (req, res) => {
+        let getUser = 'SELECT * FROM userinfo WHERE timeID = ?'
+        mysqlConnect.connection.query(getUser, [req.params.id], (err, result, fields) => {
             if (!err) {
-                res.send(result);
-                //console.log(rows);
+                //res.send(result);
+                res.send(result)
+                    //console.log(`Result is: ${result}`);
             } else {
                 throw err;
             }
         })
     })
-    .get('/test', (req, res) => {
-        res.send('this is test')
-    })
+    .get('/delete/:id', (req, res) => {
+        let deleteID = 'DELETE FROM userinfo WHERE timeID = ?';
+        mysqlConnect.connection.query(deleteID, [req.params.id], function(err, data) {
+            if (err) throw err;
+            res.redirect('/');
+        });
 
-// app.post('/api/delete/:id', (req, res) => {
-//     mysqlConnect.connection.query(`DELETE FROM userinfo WHERE id=?;`, timeID, function(err, result) {
-//         if (err) throw err;
-//     });
-// });
-
+        //res.end()
+    });
+// .get('/get_users', (req, res) => {
+//     mysqlConnect.connection.query('SELECT * FROM userinfo', (err, result, fields) => {
+//         if (!err) {
+//             res.send(result);
+//             console.log(rows);
+//         } else {
+//             throw err;
+//         }
+//     })
+// })
 
 //localhost:5500
 app.listen(port, () => {
