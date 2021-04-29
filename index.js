@@ -21,16 +21,16 @@ app
         const descrption = req.body.inputdescription;
 
         const postQuery = 'INSERT INTO userinfo VALUE (?,?,?,?,?,?)';
-        mysqlConnect.connection.query(postQuery, [timeID, lastName, firstName, email, phone, descrption], (err, rows, fields) => {
-                if (!err) {
-                    console.log('USER CREATED SUCCESSFUL!!')
-                } else {
-                    console.log(`the error if ${err}`)
-                    res.send(500);
-                    throw err;
-                }
-            })
-            //res.end();
+        mysqlConnect.connection.query(postQuery, [timeID, lastName, firstName, email, phone, descrption], (err, result, fields) => {
+            if (!err) {
+                console.log('USER CREATED SUCCESSFUL!!')
+            } else {
+                console.log(`the error if ${err}`)
+                res.send(500);
+                throw err;
+            }
+        })
+        //res.end();
         res.redirect('/');
     })
 
@@ -43,40 +43,48 @@ app
         let idContainer = [];
         mysqlConnect.connection.query('SELECT * FROM userinfo', (err, result, fields) => {
             if (!err) {
-                Object.keys(result).forEach(function(key) {
+                Object.keys(result).forEach(function (key) {
                     let row = result[key];
                     idContainer.push(row.timeID);
                 });
             } else {
                 throw err;
-            }
+            };
             res.json(idContainer);
             //console.log(idContainer)
-        })
+        });
 
     })
 
-.get('/get_user_id/:id', (req, res) => {
+    .get('/get_user_id/:id', (req, res) => {
         let getUser = 'SELECT * FROM userinfo WHERE timeID = ?'
         mysqlConnect.connection.query(getUser, [req.params.id], (err, result, fields) => {
             if (!err) {
                 //res.send(result);
                 res.send(result)
-                    //console.log(`Result is: ${result}`);
             } else {
                 throw err;
             }
         })
     })
+
     .get('/delete/:id', (req, res) => {
         let deleteID = 'DELETE FROM userinfo WHERE timeID = ?';
-        mysqlConnect.connection.query(deleteID, [req.params.id], function(err, data) {
+        mysqlConnect.connection.query(deleteID, [req.params.id], (err, result, fields) => {
             if (err) throw err;
             res.redirect('/');
         });
 
         //res.end()
     });
+
+//可以用MYSQL自带的Server agent
+// app
+//     .post('/', (req, res) => {
+//         let deleteSchedule = 'DELETE FROM userinfo HWERE timeID = ?';
+//         mysqlConnect.connection.query('DELETE FROM userinfo WHERE DATEDIFF(day, getdate(), dateColumn) < -1');
+//     })
+
 // .get('/get_users', (req, res) => {
 //     mysqlConnect.connection.query('SELECT * FROM userinfo', (err, result, fields) => {
 //         if (!err) {

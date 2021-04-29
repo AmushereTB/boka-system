@@ -155,12 +155,10 @@ function unitclick() {
 
 }
 
-//deleteSchedule
+//deleteSchedule visual
 function deleteSchedule() {
     let deleteCellId = this.id;
     alert(`this unit id ${deleteCellId} will be delete`)
-
-
 }
 
 //starting hour (need to change based on Sweden time zone)
