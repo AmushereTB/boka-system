@@ -10,12 +10,15 @@ const { ok } = require('assert');
 const app = express();
 const port = process.env.PORT || 5500;
 const publicFolder = path.join(__dirname, './public')
+app
+    .set('view engine', 'hbs')
 
 app
     .use(morgan('short'))
     .use(bodyParser.urlencoded({ extended: false }))
-    .use(bodyParser.json())
+    //.use(bodyParser.json())
     .use(express.static(publicFolder))
+    .use('/', require('./routes/pages'))
 
 app
     .post('/user_input', (req, res) => {
@@ -36,7 +39,7 @@ app
                 throw err;
             }
         })
-        res.redirect('/');
+        res.render('index');
     })
     .post('/register', async (req, res) => {
         const name = req.body.input_name;
@@ -45,57 +48,27 @@ app
         const password = req.body.input_password;
         const confirmpassword = req.body.input_confirmpassword;
         const postQuery = 'INSERT INTO registerinfo VALUE (?,?,?,?)';
-        const checkQuery = 'SELECT email FROM registerinfo WHERE email = ?';
 
-        // mysqlConnect.connection.query(checkQuery, [email], async (err, result, fields) => {
-        //         if (err) console.log(err);
-        //         if (result.length > 0) {
-        //             //res.sendFile(publicFolder + '/register.html')
-        //             //res.redirect('/register')
-        //             return app.get('/result', (req, res)=>{
-        //                 res.json(result).then(res.redirect('/register'))
-
-        //             })  //if end here                      
-        //         } 
-
-        // })// Check query end here
         const hashedPassword = await bcryptjs.hash(password, 8);
 
         mysqlConnect.connection.query(postQuery, [name, email, phoneNumber, hashedPassword], (err, result, fields) => {
-            if (err.code == 'ER_DUP_ENTRY') {
-                //console.log(err.code)
-                return res.redirect('/register')
-                //res.sendStatus(403)
-                //res.json({status: 'err', err: 'Email already in use'})
-            } else if (!err) {
-                console.log('Register SUCCESSFUL!!')
-                res.redirect('/');
-            }
-            throw err;
-            // if (!err) {
+            if(err) console.log(err)
+            else console.log('register successful!')
+            
+            
+            // if (err.code == 'ER_DUP_ENTRY') {
+            //     console.log(err.code)
+            //     return res.status(500).send(err.message)
+            // } else if (!err) {
             //     console.log('Register SUCCESSFUL!!')
-            //     res.redirect('/');
-            // } else {
-            //     console.log(`the error is ${err}`)
-            //     res.send(500);
-            //     throw err;
+            //     res.render('login');
             // }
+            // //throw err;
         })
-
-
-        //res.json({status: 'ok'})
+        res.render('index')
     })//post ending
 
 app
-    .get('/', (req, res) => {
-        res.sendFile(publicFolder + '/index.html')
-    })
-    .get('/register', (req, res) => {
-        res.sendFile(publicFolder + '/register.html')
-    })
-    .get('/login', (req, res) => {
-        res.sendFile(publicFolder + '/login.html')
-    })
     .get('/get_users', (req, res) => {
         let idContainer = [];
         mysqlConnect.connection.query('SELECT * FROM userinfo', (err, result, fields) => {
@@ -108,7 +81,6 @@ app
                 throw err;
             };
             res.json(idContainer);
-            //console.log(idContainer)
         });
 
     })
@@ -116,7 +88,6 @@ app
         let getUser = 'SELECT * FROM userinfo WHERE timeID = ?'
         mysqlConnect.connection.query(getUser, [req.params.id], (err, result, fields) => {
             if (!err) {
-                //res.send(result);
                 res.send(result)
             } else {
                 throw err;
