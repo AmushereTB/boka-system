@@ -49,5 +49,40 @@ table td {
 }
 
 .btn {
-    margin-bottom: 10px;
+    margin: 5px;
+}
+
+
+nav {
+    background-color: #6858f888;
+    color:#fff;
+    padding: 30px 60px;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+nav li {
+    list-style: none;
+}
+
+nav li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 8px;
+}
+
+nav li a:hover {
+    color: yellow;
+    text-decoration: none;
+}
+
+.calendar {
+    margin: 5px;
 }

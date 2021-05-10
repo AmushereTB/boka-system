@@ -102,18 +102,14 @@ const tableBody = () => {
 
                     } else {
                         if (data.includes(unitID)) {
-
-                            btn = document.createElement('button');
-                            btn.setAttribute('type', 'button');
-                            btn.setAttribute('class', 'close')
+                    //button close need to redo.
+                            //btn = document.createElement('button');
+                            btn = document.createElement('a');
+                            //btn.setAttribute('type', 'button');
+                            btn.setAttribute('class', 'btn-close btn-close-white position-absolute')
                             btn.setAttribute('aria-label', 'Close')
+                            btn.setAttribute('href', `/delete/` + encodeURIComponent(unitID))
 
-                            insertI = document.createElement('a');
-                            insertI.setAttribute('aria-hidden', "true")
-                            insertI.setAttribute('href', `/delete/` + encodeURIComponent(unitID))
-                            insertI.innerHTML = '&times;'
-
-                            btn.appendChild(insertI)
                             btn.addEventListener('click', deleteSchedule)
                             btn.setAttribute('id', unitID);
                             column.innerHTML = 'bokad';
@@ -150,7 +146,7 @@ function unitclick() {
 
     //alert(`this unit is ${tableCellId}`)
     //window.open("./form.html")
-    window.location = "./form.html"
+    window.location = "/user_input"
         //location.href = "www.google.com"
 
 }
