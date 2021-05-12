@@ -23,7 +23,7 @@
     <div class="container mt-4">
         <div class="card">
             <div class="card-body">
-                <form action="/register" method="POST">
+                <form action="/user_register" method="POST">
                     <div class="mb-3">
                       <label for="name" class="form-label">Name</label>
                       <input type="text" class="form-control" id="name" name="input_name" placeholder="John Doe" required>
@@ -51,8 +51,9 @@
                   </form>
             </div>
         </div>
-        <div id="span-message">
-            
+        {{#if message}}
+            <h4 class="alert alert-danger mt-4"> {{message}} </h4>
+        {{/if}}    
         </div>
     </div>
 <!--bootstrap script-->
@@ -69,7 +70,6 @@
             document.getElementById('message').innerHTML = 'not matching';
         }
         }; //check end
-
 
     </script>
 </body>
