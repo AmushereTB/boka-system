@@ -33,39 +33,47 @@ app
         mysqlConnect.connection.query(postQuery, [timeID, lastName, firstName, email, phone, descrption], (err, result, fields) => {
             if (!err) {
                 console.log('USER CREATED SUCCESSFUL!!')
+                res.render('feedback', {
+                    message:'Booking successed, page will return in 3 sec'
+                })
             } else {
                 console.log(`the error is ${err}`)
                 res.send(500);
                 throw err;
             }
-        })
-        res.render('index');
-    })
-    .post('/register', async (req, res) => {
+        })//connection end here
+    })//post end here
+    .post('/user_register', async (req, res) => {
         const name = req.body.input_name;
         const email = req.body.input_email;
         const phoneNumber = req.body.input_phonenumber;
         const password = req.body.input_password;
         const confirmpassword = req.body.input_confirmpassword;
         const postQuery = 'INSERT INTO registerinfo VALUE (?,?,?,?)';
-
+        //const error = new Error();
         const hashedPassword = await bcryptjs.hash(password, 8);
 
-        mysqlConnect.connection.query(postQuery, [name, email, phoneNumber, hashedPassword], (err, result, fields) => {
-            if(err) console.log(err)
-            else console.log('register successful!')
-            
-            
-            // if (err.code == 'ER_DUP_ENTRY') {
-            //     console.log(err.code)
-            //     return res.status(500).send(err.message)
-            // } else if (!err) {
-            //     console.log('Register SUCCESSFUL!!')
-            //     res.render('login');
-            // }
-            // //throw err;
-        })
-        res.render('index')
+        if (password !== confirmpassword) {
+            return res.render('register', {
+                message: 'password not match'
+            })
+        } else {
+            mysqlConnect.connection.query(postQuery, [name, email, phoneNumber, hashedPassword], (err, result, fields) => {
+                if (err) {
+                    if (err.code == 'ER_DUP_ENTRY') {
+                        return res.render('register', {
+                            message: 'This email is registered'
+                        })
+                    } else throw err;
+                } else {
+                    console.log('register successful!')
+                        res.render('feedback', {
+                        message: 'Register successed, page will return to homepage in 3 sec'
+                        })
+                }
+
+            }) //connection end
+        } //else end
     })//post ending
 
 app
