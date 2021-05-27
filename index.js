@@ -2,23 +2,46 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
-const jwt = require('jsonwebtoken');
-const bcryptjs = require('bcryptjs');
+const session = require('express-session');
+const bcrypt = require('bcryptjs');
 const mysqlConnect = require('./mysqlconnect');
-const { ok } = require('assert');
+const cookieParser = require('cookie-parser');
+const MySQLStore = require('express-mysql-session')(session);
 
 const app = express();
 const port = process.env.PORT || 5500;
-const publicFolder = path.join(__dirname, './public')
+const publicFolder = path.join(__dirname, './public');
+
+let sessionStore = new MySQLStore({}, mysqlConnect.connection);
+
 app
     .set('view engine', 'hbs')
 
 app
     .use(morgan('short'))
     .use(bodyParser.urlencoded({ extended: false }))
-    //.use(bodyParser.json())
+    .use(cookieParser())
+    .use(session({
+        key: 'user_session',
+        cookie: {
+            maxAge: Number(process.env.SESSION_LIFETIME),
+            sameSite: true
+        },
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: sessionStore
+    }))
     .use(express.static(publicFolder))
     .use('/', require('./routes/pages'))
+
+const isAuth = (req, res, next) => {
+    if(req.session.isAuth){
+        next()
+    }else{
+        res.redirect('/login')
+    }
+}
 
 app
     .post('/user_input', (req, res) => {
@@ -34,7 +57,7 @@ app
             if (!err) {
                 console.log('USER CREATED SUCCESSFUL!!')
                 res.render('feedback', {
-                    message:'Booking successed, page will return in 3 sec'
+                    message: 'Booking successed, page will return in 3 sec'
                 })
             } else {
                 console.log(`the error is ${err}`)
@@ -51,7 +74,7 @@ app
         const confirmpassword = req.body.input_confirmpassword;
         const postQuery = 'INSERT INTO registerinfo VALUE (?,?,?,?)';
         //const error = new Error();
-        const hashedPassword = await bcryptjs.hash(password, 8);
+        const hashedPassword = await bcrypt.hash(password, 8);
 
         if (password !== confirmpassword) {
             return res.render('register', {
@@ -67,14 +90,49 @@ app
                     } else throw err;
                 } else {
                     console.log('register successful!')
-                        res.render('feedback', {
-                        message: 'Register successed, page will return to homepage in 3 sec'
-                        })
+                    req.session.isAuth = true;
+                    res.redirect('/dashboard')
+                    // res.render('feedback', {
+                    //     message: 'Register successed, page will redirect in 3 sec'
+                    // })
                 }
 
             }) //connection end
         } //else end
     })//post ending
+    .post('/user_login', (req, res) => {
+        try {
+            const email = req.body.input_email;
+            const password = req.body.input_password;
+            const postQuery = 'SELECT * FROM registerinfo WHERE email = ?'
+
+            mysqlConnect.connection.query(postQuery, [email], async (err, result, fields) => {
+
+                if (result.length == 0 || !(await bcrypt.compare(password, result[0].password))) {
+                    return res.status(401).render('login', {
+                        message: ' Email or Password is incorrect, please try again.'
+                    })
+                };
+
+                if (result.length > 0 && await bcrypt.compare(password, result[0].password)) {
+                    req.session.isAuth = true;
+                    res.redirect('/dashboard');
+                };
+
+            })//mysqlConnect end
+
+        } catch (error) {
+            console.log('Found error: ' + error);
+        }
+    })
+    .post('/logout', (req, res) => {
+        req.session.destroy(function(err) {
+            if(err) throw err
+            else{
+                res.redirect('/')
+            }
+          })
+    })
 
 app
     .get('/get_users', (req, res) => {
@@ -108,7 +166,10 @@ app
             if (err) throw err;
             res.redirect('/');
         });
-    });
+    })
+    .get('/dashboard', isAuth, (req, res) => {
+        res.render('dashboard')
+    })
 
 //localhost:5500
 app.listen(port, () => {
