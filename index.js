@@ -35,11 +35,13 @@ app
     .use(express.static(publicFolder))
     .use('/', require('./routes/pages'))
 
-app.get('/session', (req, res) => {
-    req.session.isAuth = true
-    //console.log(req.session)
-    res.send('session test page')
-})
+const isAuth = (req, res, next) => {
+    if(req.session.isAuth){
+        next()
+    }else{
+        res.redirect('/login')
+    }
+}
 
 app
     .post('/user_input', (req, res) => {
@@ -88,9 +90,11 @@ app
                     } else throw err;
                 } else {
                     console.log('register successful!')
-                    res.render('feedback', {
-                        message: 'Register successed, page will return to homepage in 3 sec'
-                    })
+                    req.session.isAuth = true;
+                    res.redirect('/dashboard')
+                    // res.render('feedback', {
+                    //     message: 'Register successed, page will redirect in 3 sec'
+                    // })
                 }
 
             }) //connection end
@@ -111,7 +115,8 @@ app
                 };
 
                 if (result.length > 0 && await bcrypt.compare(password, result[0].password)) {
-                    res.render('profile')
+                    req.session.isAuth = true;
+                    res.redirect('/dashboard');
                 };
 
             })//mysqlConnect end
@@ -119,6 +124,14 @@ app
         } catch (error) {
             console.log('Found error: ' + error);
         }
+    })
+    .post('/logout', (req, res) => {
+        req.session.destroy(function(err) {
+            if(err) throw err
+            else{
+                res.redirect('/')
+            }
+          })
     })
 
 app
@@ -153,7 +166,10 @@ app
             if (err) throw err;
             res.redirect('/');
         });
-    });
+    })
+    .get('/dashboard', isAuth, (req, res) => {
+        res.render('dashboard')
+    })
 
 //localhost:5500
 app.listen(port, () => {
