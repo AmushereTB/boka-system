@@ -91,3 +91,8 @@ nav li a:hover {
     font-weight: bolder;
     font-size: 15px;
 }
+
+#char_dec{
+    text-decoration: none;
+    color:black
+}
