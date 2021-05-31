@@ -102,18 +102,16 @@ const tableBody = () => {
 
                     } else {
                         if (data.includes(unitID)) {
-                    //button close need to redo.
-                            //btn = document.createElement('button');
-                            btn = document.createElement('a');
-                            //btn.setAttribute('type', 'button');
-                            btn.setAttribute('class', 'btn-close btn-close-white position-absolute')
-                            btn.setAttribute('aria-label', 'Close')
-                            btn.setAttribute('href', `/delete/` + encodeURIComponent(unitID))
 
-                            btn.addEventListener('click', deleteSchedule)
-                            btn.setAttribute('id', unitID);
+                            // btn = document.createElement('a');
+                            // btn.setAttribute('class', 'btn-close btn-close-white position-absolute')
+                            // btn.setAttribute('aria-label', 'Close')
+                            // btn.setAttribute('href', `/delete/` + encodeURIComponent(unitID))
+
+                            // btn.addEventListener('click', deleteSchedule)
+                            // btn.setAttribute('id', unitID);
                             column.innerHTML = 'bokad';
-                            column.appendChild(btn)
+                            //column.appendChild(btn)
 
                             column.setAttribute('style', 'background-color:gray')
                         } else {

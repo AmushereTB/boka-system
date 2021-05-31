@@ -86,3 +86,8 @@ nav li a:hover {
 .calendar {
     margin: 5px;
 }
+
+#first_column{
+    font-weight: bolder;
+    font-size: 15px;
+}

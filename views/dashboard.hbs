@@ -15,20 +15,34 @@
   <nav>
     <h4>Booking History</h4>
     <ul>
-      <li><a href="">Home</a></li>
+      <li><a href="/">Home</a></li>
     </ul>
   </nav>
 
   <div class="container mt-4">
-      <div class="card">
-          <h4>hello</h4>
-      </div>
-       <form action="/logout" method="POST">
+    <div class="card">
+          <h4>Booking Info</h4>
+
+      <table class="table" id="js-table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Time</th>
+            <th scope="col">Description</th>
+            <th scope="col">Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+
+      <form action="/logout" method="POST">
         <button>logout</button>
       </form>
   </div>
 
-
+  <script src="bookhistory.js"></script>
   <!--bootstrap javscript-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 </body>
