@@ -30,8 +30,8 @@ function tableDisplay() {
                 cell3.innerHTML = data[i].description;
                 console.log(new Date(swedTime) < new Date(compareTime))
                 if (new Date(swedTime) < new Date(compareTime)) {
-                    cell4.innerHTML = '<button class="btn btn-outline-danger" type="button">'
-                        + '<a href = "/delete/' + data[i].timeID + '">' + 'Cancle</a> </button>'
+                    cell4.innerHTML = '<button class="btn btn-outline-info" type="button">'
+                        + '<a id="char_dec" href = "/delete/' + data[i].timeID + '">' + 'Cancle</a> </button>'
                 } else {
                     cell4.innerHTML = "Session Occupied";
                 }
