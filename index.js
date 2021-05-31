@@ -29,6 +29,7 @@ app
         },
         secret: process.env.SESSION_SECRET,
         resave: false,
+        rolling: true,
         saveUninitialized: false,
         store: sessionStore
     }))
@@ -89,7 +90,8 @@ app
                         })
                     } else throw err;
                 } else {
-                    console.log('register successful!')
+                    console.log('register successful!');
+                    req.session.email = email;
                     req.session.isAuth = true;
                     res.redirect('/dashboard')
                     // res.render('feedback', {
@@ -99,7 +101,7 @@ app
 
             }) //connection end
         } //else end
-    })//post ending
+    })
     .post('/user_login', (req, res) => {
         try {
             const email = req.body.input_email;
@@ -115,6 +117,7 @@ app
                 };
 
                 if (result.length > 0 && await bcrypt.compare(password, result[0].password)) {
+                    req.session.email = result[0].email;
                     req.session.isAuth = true;
                     res.redirect('/dashboard');
                 };
@@ -164,8 +167,16 @@ app
         let deleteID = 'DELETE FROM userinfo WHERE timeID = ?';
         mysqlConnect.connection.query(deleteID, [req.params.id], (err, result, fields) => {
             if (err) throw err;
-            res.redirect('/');
+            res.redirect('/dashboard');
         });
+    })
+    .get('/booking_info', (req, res) => {
+        let bookedInfo = 'SELECT * FROM userinfo WHERE email = ?';
+        mysqlConnect.connection.query(bookedInfo, [req.session.email], (err, result, fields) => {
+            //console.log(result)
+            res.json(result)
+        })
+
     })
     .get('/dashboard', isAuth, (req, res) => {
         res.render('dashboard')
